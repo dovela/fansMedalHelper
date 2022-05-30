@@ -49,7 +49,15 @@ config文件默认挂载到主机`/var/fansMedalHelperConfig`下
 
 config修改请参照上面
 
-目前只能执行一次，定时任务要在主机上设置cron
+### 定时运行
+由于是docker，原版自带的定时器不能生效，这里使用cron来实现
+
+`crontab -e`尾部追加
+
+```shell
+#分 时 天 月 周 这里每天5:10启动容器
+10 5 * * * docker start fansMedalHelper 
+```
 
 ---
 
@@ -57,7 +65,8 @@ config修改请参照上面
 - 反馈交流群：979245756
 - 提 issue  
 - B站私信 [晓小轩iAVA](https://space.bilibili.com/1772442517)  
-**提之前请明确问题主题和运行日志**  
+  **提之前请明确问题主题和运行日志**  
+- (docker问题提issue就行)
 
 ---
 ### 友情链接  
