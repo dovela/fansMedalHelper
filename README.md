@@ -30,17 +30,40 @@
 
 ---
 
+### Docker
+
+```
+docker run -d \
+  --name=fansMedalHelper \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ=Asia/Shanghai \
+  -v /var/fansMedalHelperConfig:/fansMedalHelper/config \
+  --restart no \
+docker.io/dovela/fansmedalhelper:latest
+```
+
+config文件默认挂载到主机`/var/fansMedalHelperConfig`下
+
+主机还需要运行`wget https://github.com/dovela/fansMedalHelper/raw/master/config/users.yaml -O /var/fansMedalHelperConfig/users.yaml`
+
+config修改请参照上面
+
+目前只能执行一次，定时任务要在主机上设置cron
+
+---
+
 ### 问题反馈  
 - 反馈交流群：979245756
 - 提 issue  
 - B站私信 [晓小轩iAVA](https://space.bilibili.com/1772442517)  
 **提之前请明确问题主题和运行日志**  
 
----  
+---
 ### 友情链接  
 - 此脚本的Go语言实现版本 [ThreeCatsLoveFish/MedalHelper](https://github.com/ThreeCatsLoveFish/MedalHelper)
 - AW的B站挂机助手 [andywang425/BLTH](https://github.com/andywang425/BLTH)
 
----  
+---
 ### 赞助
 <img src="http://i0.hdslb.com/bfs/album/c267037c9513b8e44bc6ec95dbf772ff0439dce6.jpg" width="500" />
