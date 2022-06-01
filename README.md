@@ -45,9 +45,11 @@ docker.io/dovela/fansmedalhelper:latest
 
 config文件默认挂载到主机`/var/fansMedalHelperConfig`下
 
-主机还需要运行`wget https://github.com/dovela/fansMedalHelper/raw/master/config/users.yaml -O /var/fansMedalHelperConfig/users.yaml`
+主机还需要下载config至/var/fansMedalHelperConfig:
 
-config修改请参照上面
+`wget https://github.com/dovela/fansMedalHelper/raw/master/config/users.yaml -O /var/fansMedalHelperConfig/users.yaml`
+
+config修改请参照上面原版文档
 
 ### 定时运行
 由于是docker，原版自带的定时器不能生效，这里使用cron来实现
