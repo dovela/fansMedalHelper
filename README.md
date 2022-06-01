@@ -4,8 +4,7 @@
 <div align="center">
 <h1> 新 B 站粉丝牌助手
 </h1>
-
-<p>当前版本：0.3.2</p>
+<p>当前版本：0.3.3</p>
 
  </div>
 
@@ -64,17 +63,10 @@ config修改请参照上面原版文档
 ---
 
 ### 问题反馈  
-- 反馈交流群：979245756
-- 提 issue  
-- B站私信 [晓小轩iAVA](https://space.bilibili.com/1772442517)  
-  **提之前请明确问题主题和运行日志**  
-- (docker问题提issue就行)
-
----
-### 友情链接  
-- 此脚本的Go语言实现版本 [ThreeCatsLoveFish/MedalHelper](https://github.com/ThreeCatsLoveFish/MedalHelper)
-- AW的B站挂机助手 [andywang425/BLTH](https://github.com/andywang425/BLTH)
+- docker问题提issue就行
 
 ---
 ### 赞助
+（[原作者](https://github.com/XiaoMiku01)留）
+
 <img src="http://i0.hdslb.com/bfs/album/c267037c9513b8e44bc6ec95dbf772ff0439dce6.jpg" width="500" />
