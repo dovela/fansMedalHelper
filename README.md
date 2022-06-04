@@ -42,6 +42,41 @@
 
 ---
 
+### Docker
+
+```
+docker run -d \
+  --name=fansMedalHelper \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ=Asia/Shanghai \
+  -v /var/fansMedalHelperConfig:/fansMedalHelper/config \
+  --restart no \
+docker.io/dovela/fansmedalhelper:latest
+```
+
+config文件默认挂载到主机`/var/fansMedalHelperConfig`下
+
+主机还需要下载config至/var/fansMedalHelperConfig:
+
+```
+wget https://github.com/dovela/fansMedalHelper/raw/master/config/users.yaml -O /var/fansMedalHelperConfig/users.yaml
+```
+
+config修改请参照上面原版文档
+
+### 定时运行
+由于是docker，原版自带的定时器不能生效，这里使用cron来实现
+
+`crontab -e`尾部追加
+
+```shell
+#分 时 天 月 周 这里每天5:10启动容器
+10 5 * * * docker start fansMedalHelper 
+```
+
+---
+
 ### 友情链接
 
 -   感谢 银弹 的 推送库 [y1ndan/onepush](https://github.com/y1ndan/onepush)
