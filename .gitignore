@@ -6,5 +6,4 @@ go.mod
 go.sum
 *.exe
 login_info.txt
-config/users.yaml
 *.tmp
