@@ -10,7 +10,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from src import BiliUser
 log = logger.bind(user="B站粉丝牌助手")
-__VERSION__ = "0.3.3"
+__VERSION__ = "0.3.4"
 
 warnings.filterwarnings(
     "ignore",
@@ -33,6 +33,8 @@ try:
             "DANMAKU_CD": users['DANMAKU_CD'],
             "WATCHINGLIVE": users['WATCHINGLIVE'],
             "WEARMEDAL": users['WEARMEDAL'],
+            "SIGNINGROUP": users.get('SIGNINGROUP', 2),
+            "PROXY": users.get('PROXY'),
         }
 except Exception as e:
     log.error(f"读取配置文件失败,请检查配置文件格式是否正确: {e}")
@@ -44,12 +46,13 @@ async def main():
     messageList = []
     session = aiohttp.ClientSession()
     try:
+        log.warning("当前版本为: " + __VERSION__)
         resp = await (await session.get("http://version.fansmedalhelper.1961584514352337.cn-hangzhou.fc.devsapp.net/")).json()
         if resp['version'] != __VERSION__:
-            log.warning("当前版本为" + __VERSION__ + ",新版本为" + resp['version'] + ",请更新")
+            log.warning("新版本为: " + resp['version'] + ",请更新")
             log.warning("更新内容: " + resp['changelog'])
             messageList.append(f"当前版本: {__VERSION__} ,最新版本: {resp['version']}")
-            messageList.append(f"更新内容:{resp['changelog']} ")
+            messageList.append(f"更新内容: {resp['changelog']} ")
         if resp['notice']:
             log.warning("公告: " + resp['notice'])
             messageList.append(f"公告: {resp['notice']}")
@@ -65,9 +68,13 @@ async def main():
             initTasks.append(biliUser.init())
             startTasks.append(biliUser.start())
             catchMsg.append(biliUser.sendmsg())
-    await asyncio.gather(*initTasks)
-    await asyncio.gather(*startTasks)
-    messageList = messageList + list(itertools.chain.from_iterable(await asyncio.gather(*catchMsg)))
+    try:
+        await asyncio.gather(*initTasks)
+        await asyncio.gather(*startTasks)
+        messageList = messageList + list(itertools.chain.from_iterable(await asyncio.gather(*catchMsg)))
+    except Exception as e:
+        log.exception(e)
+        messageList.append(f"任务执行失败: {e}")
     [log.info(message) for message in messageList]
     if users.get('SENDKEY', ''):
         await push_message(session, users['SENDKEY'], "  \n".join(messageList))
@@ -76,7 +83,7 @@ async def main():
         from onepush import notify
         notifier = users['MOREPUSH']['notifier']
         params = users['MOREPUSH']['params']
-        await notify(notifier, title=f"【B站粉丝牌助手推送】", content="  \n".join(messageList), **params)
+        await notify(notifier, title=f"【B站粉丝牌助手推送】", content="  \n".join(messageList), **params, proxy=config.get('PROXY'))
         log.info(f"{notifier} 已推送")
 
 
@@ -105,6 +112,7 @@ if __name__ == '__main__':
         schedulers.start()
     else:
         log.info('外部调用,开启任务')
-        loop = asyncio.get_event_loop()
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
         loop.run_until_complete(main())
         log.info("任务结束")

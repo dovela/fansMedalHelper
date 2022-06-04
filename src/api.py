@@ -68,6 +68,8 @@ def retry(tries=3, interval=1):
                             raise e
                         elif e.code == 10030:
                             await asyncio.sleep(10)
+                        elif e.code == -504:
+                            pass
                         else:
                             raise e
                     if count > tries:
@@ -143,7 +145,7 @@ class BiliApi:
             "appkey": Crypto.APPKEY,
             "ts": int(time.time()),
             "page": 1,
-            "page_size": 100,
+            "page_size": 50,
         }
         first_flag = True
         while True:
@@ -364,3 +366,27 @@ class BiliApi:
         return await self.__post(url, data=SingableDict(data).signed, headers=self.headers.update({
             "Content-Type": "application/x-www-form-urlencoded",
         }))
+
+    async def getGroups(self):
+        url = "https://api.live.bilibili.com/link_group/v1/member/my_groups"
+        params = {
+            "access_key": self.u.access_key,
+            "actionKey": "appkey",
+            "appkey": Crypto.APPKEY,
+            "ts": int(time.time())
+        }
+        list = (await self.__get(url, params=SingableDict(params).signed, headers=self.headers))['list']
+        for group in list:
+            yield group
+
+    async def signInGroups(self, group_id: int, owner_id: int):
+        url = "https://api.vc.bilibili.com/link_setting/v1/link_setting/sign_in"
+        params = {
+            "access_key": self.u.access_key,
+            "actionKey": "appkey",
+            "appkey": Crypto.APPKEY,
+            "ts": int(time.time()),
+            "group_id": group_id,
+            "owner_id": owner_id,
+        }
+        return await self.__get(url, params=SingableDict(params).signed, headers=self.headers)
