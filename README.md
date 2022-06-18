@@ -50,9 +50,10 @@ docker run -d \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Asia/Shanghai \
-  -v /var/fansMedalHelperConfig:/fansMedalHelper/config \
+  -v /var/fansMedalHelperConfig/users.yaml:/fansMedalHelper/users.yaml \
+  -v /etc/localtime:/etc/localtime \
   --restart no \
-docker.io/dovela/fansmedalhelper:latest
+dovela/fansmedalhelper:latest
 ```
 
 config文件默认挂载到主机`/var/fansMedalHelperConfig`下
@@ -60,10 +61,14 @@ config文件默认挂载到主机`/var/fansMedalHelperConfig`下
 主机还需要下载config至/var/fansMedalHelperConfig:
 
 ```
-wget https://github.com/dovela/fansMedalHelper/raw/master/config/users.yaml -O /var/fansMedalHelperConfig/users.yaml
+wget https://github.com/XiaoMiku01/fansMedalHelper/raw/master/users.yaml -O /var/fansMedalHelperConfig/users.yaml
 ```
 
 config修改请参照上面原版文档
+
+***容器已转为基于原作者仓库创建，未使用本项目文件***
+
+
 
 ### 定时运行
 由于是docker，原版自带的定时器不能生效，这里使用cron来实现
