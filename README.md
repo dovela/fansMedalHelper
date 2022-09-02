@@ -90,7 +90,11 @@ config修改请参照上面原版文档
 
 ---  
 
-###  本项目暂不接受任何 PR 如有问题或者新想法、功能可以通过 Issues 告诉我
+###  本项目暂不接受任何 PR 如有问题或者新想法、功能可以通过 Issues 告诉我  
+
+## 历史 Star 数
+
+[![Stargazers over time](https://starchart.cc/XiaoMiku01/fansMedalHelper.svg)](https://starchart.cc/XiaoMiku01/fansMedalHelper)
 
 ### 赞助
 
